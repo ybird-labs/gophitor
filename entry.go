@@ -19,6 +19,16 @@ const (
 	CategorySystem           ActionCategory = "system"
 )
 
+var (
+	ActionLogin  = ActionKind{"user.login", CategoryAuthentication}
+	ActionLogout = ActionKind{"user.logout", CategoryAuthentication}
+)
+
+type ActionKind struct {
+	Action   string
+	Category ActionCategory
+}
+
 type ActionStatus string
 
 const (
@@ -27,25 +37,26 @@ const (
 	StatusDenied    ActionStatus = "denied"
 )
 
+type ActorType string
+
 const ()
 
 type Entry struct {
 	ID string `json:"id"`
 
 	// Actor
-	ActorID        string `json:"actor_id"`
-	ActorType      string `json:"actor_type"`
-	ActorIP        net.IP `json:"actor_ip,omitempty"`         // Redactable
-	ActorUserAgent string `json:"actor_user_agent,omitempty"` // Redactable
+	ActorID        string    `json:"actor_id"`
+	ActorType      ActorType `json:"actor_type"`
+	ActorIP        net.IP    `json:"actor_ip,omitempty"`         // Redactable
+	ActorUserAgent string    `json:"actor_user_agent,omitempty"` // Redactable
 
 	// Tenant
 	TenantID    string `json:"tenant_id"`
 	WorkspaceID string `json:"workspace_id"`
 
 	// Action
-	Action         string         `json:"action"`
-	ActionCategory ActionCategory `json:"action_category"`
-	ActionStatus   ActionStatus   `json:"action_status"`
+	ActionKind   ActionKind
+	ActionStatus ActionStatus `json:"action_status"`
 
 	// Target
 	ResourceType string `json:"resource_type"`
